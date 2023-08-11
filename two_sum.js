@@ -23,7 +23,6 @@ function twoSum (nums, target) {
     } //otherwise add the current element to the object with the current index as the value
     obj[nums[i]] = i;
   }
-  console.log(obj)
   return;
 }
 
