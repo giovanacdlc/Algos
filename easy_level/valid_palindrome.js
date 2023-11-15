@@ -36,7 +36,7 @@ function validPalindrome(string) {
 	// return validPalindrome(newString.slice(1, newString.length - 1));
 
     //declare a variable and assign it to the string in lower case with non- alphanumeric characters removed
-    let newString = string.toLowerCase().replace(/\W/g, '');
+    let newString = string.toLowerCase().replace(/[\W_]/g, '');
     //base case: string length is less than 1
     if (newString.length <= 1) return true;
     //base case: if the first and last characters are not equal 
