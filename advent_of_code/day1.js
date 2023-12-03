@@ -23,37 +23,31 @@ const puzzleInput = await summonPuzzleInput();
 async function processInput (puzzleInput) {
     let total = 0;
 
-    // Define the word-to-number mapping
-    const wordToNumberMap = {
-        'one': 1,
-        'two': 2,
-        'three': 3,
-        'four': 4,
-        'five': 5,
-        'six': 6,
-        'seven': 7,
-        'eight': 8,
-        'nine': 9
-    };
-
     // Separate the string by line, where each line is an element in an array
     const lines = puzzleInput.split('\n');
 
     // Iterate through the array to find the first and last numbers in each element
     for (const line of lines) {
         // Make the string all lowercase
-        const lower = line.toLowerCase();
+        //const lower = line.toLowerCase();
+        
+        // Replace only the first letter of words 'one' to 'nine' with corresponding digits
+        const modifiedString = line.toLowerCase()
+        .replaceAll('one', 'o1ne')
+        .replaceAll('two', 't2wo')
+        .replaceAll('three', 't3hree')
+        .replaceAll('four', 'f4our')
+        .replaceAll('five', 'f5ive')
+        .replaceAll('six', 's6ix')
+        .replaceAll('seven', 's7even')
+        .replaceAll('eight', 'e8ight')
+        .replaceAll('nine', 'n9ine')
 
-        // Replace only the first letter of each recognized word with the corresponding number
-        const modifiedString = lower.replace(/\b(?:one|two|three|four|five|six|seven|eight|nine)\b/g, match => {
-            return match[0] + wordToNumberMap[match.slice(1)];
-        });
-            //wordToNumberMap[match]
         // Each line remove anything that is not a number
         const numsOnly = modifiedString.replace(/\D/g, '');
            
         // Check if numsOnly is not empty before accessing its elements
-        if (numsOnly !== '') {
+        if (numsOnly) {
             // Declare a variable and assign it to the first num
             const first = numsOnly[0];
             // Declare a variable and assign it to the last num
@@ -68,10 +62,11 @@ async function processInput (puzzleInput) {
     return total;
 }
 
-const example = 'trknlxnv43zxlrqjtwonec';
-console.log(processInput(example));
 
-// const result = await processInput(puzzleInput);
-// console.log(result);
+// const example = 'trknlxnv43zxlrqjtwonec';
+// console.log(processInput(example));
+
+const result = await processInput(puzzleInput);
+console.log(result);
 
 
