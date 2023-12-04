@@ -49,66 +49,67 @@ const puzzleInput = await summonPuzzleInput();
 async function processInput (puzzleInput) {
     // Separate the string by line, where each line is an element in an array
     const lines = puzzleInput.split('\n')
-
+    
     let total = 0;
     //console.log(lines);
     //iterate through the array to find the first number which will be the id
     for (const line of lines) {
-        //create an object 
-        const object = {
-            'id': 0
-        }
+        let id = 0;
+        let check = true;
         // Extract the ID assuming it's the number following "Game"
         const match = line.match(/Game (\d+):/);
         if (match) {
-            object.id = Number(match[1]);
+            id = Number(match[1]);
         }
+        console.log('line: ', line, );
         //separate the line based on subsets
         let subsets = line.split(';');
         for (const subset of subsets) {
+            //create an object 
+            const object = {
+                'id': id,
+                'blue': 0,
+                'green': 0,
+                'red': 0
+            }
             //iterate through the subset separating by words
             let words = subset.split(' ');
-            console.log('line: ', line, 'subset: ', subset, 'words: ', words);
+            
+            //iterate through the words
+            for (let i = 0; i < words.length; i++) {
+                //check if the current word includes 'blue'
+                if (words[i].includes('blue')) {
+                    //if so then add the value to the object
+                    object.blue += Number(words[i - 1]);
+                }
+                //check if the current word includes 'red'
+                if (words[i].includes('red')) {
+                    //if so then add the value to the object
+                    object.red += Number(words[i - 1]);
+                }
+                //check if the current word includes 'blue'
+                if (words[i].includes('green')) {
+                    //if so then add the value to the object
+                    object.green += Number(words[i - 1]);
+                }
+            }
+            console.log({'id: ': id, 'subset': subset, 'words': words, 'object: ': object});
+            //now that we have the object at each subset check if the total of each color is less than 12 red, 13 green, and 14 blue
+            if (!(object.red <= 12 && object.green <= 13 && object.blue <= 14)) {
+                //if any subsets fail, change check to false
+                check = false;
+                break;
+            }
         }
-        // const object = {
-        //     'id': 0,
-        //     'red': 0,
-        //     'blue': 0,
-        //     'green': 0
-        // }
-        // for (let i = 0; i < words.length; i++) {
-
-        // }
+        //once we went through all the subsets, check if they all pass
+        if (check) {
+            total += Number(id);
+            console.log('total: ', total);
+        }
     }
-    //     //iterate through the words
-    //     for (let i = 0; i< subset.length; i ++) {
-    //         //check if the current word is 'blue'
-    //         if (words[i].includes('blue')) {
-    //             //add the value of the previous element to the object
-    //             object.blue += Number(words[i-1]);
-    //         }
-    //         //check if the current word is 'green'
-    //         if (words[i].includes('green')) {
-    //             //add the value of the previous element to the object
-    //             object.green += Number(words[i-1]);
-    //         }
-    //         //check if the current word is 'blue'
-    //         if (words[i].includes('red')) {
-    //             //add the value of the previous element to the object
-    //             object.red += Number(words[i-1]);
-    //         }
-    //     }
-    //     console.log('line:', line, 'object: ', object);
-    //     //now that we have the objects, we need to check if the total of each color is less than 12 red, 13 green, and 14 blue
-    //     if (object.red <= 12 && object.green <= 13 && object.blue <= 14) {
-    //         //if all good then add the id number to the total
-    //         total += (Number(object.id));
-    //         console.log('total: ', total);
-    //     }
-    // }
-    // return total;
+    return total;
 }
-
-
 const result = await processInput(puzzleInput);
 console.log(result);
+
+
